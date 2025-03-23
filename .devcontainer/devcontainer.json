@@ -17,6 +17,12 @@
 				"ms-python.python"
 			]
 		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {
+			"ppa": true,
+			"version": "os-provided"
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
