@@ -6,7 +6,7 @@ class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
-    guests = models.ManyToManyField(User, related_name='guest_projects')
+    guests = models.ManyToManyField(User, related_name='guest_projects', blank=True)
 
     def __str__(self):
         return self.name

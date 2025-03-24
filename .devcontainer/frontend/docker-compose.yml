@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgis/postgis:latest
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=batmonitoring
+    ports:
+      - 5432:5432   
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - batmonitoring
+
+  app-backend:
+    build: 
+      context: ../..
+      dockerfile: .devcontainer/backend/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8000:8000
+    volumes:
+      - ../..:/workspace:cached
+    networks:
+      - batmonitoring
+
+  app-frontend:
+    build: 
+      context: ../..
+      dockerfile: .devcontainer/frontend/Dockerfile
+    depends_on:
+      - app-backend
+    ports:
+      - 3000:3000
+    volumes:
+      - ../..:/workspace:cached
+    networks:
+      - batmonitoring
+  
+
+volumes:
+  db-data:
+
+networks:
+  batmonitoring:
