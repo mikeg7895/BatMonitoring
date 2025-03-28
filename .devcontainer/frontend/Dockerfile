@@ -8,4 +8,4 @@ WORKDIR /workspace/frontend
 
 RUN npm install
 
-CMD ["npm", "run", "dev"]
+CMD ["tail", "-f", "/dev/null"]
