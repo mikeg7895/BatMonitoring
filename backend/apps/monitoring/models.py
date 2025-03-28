@@ -7,6 +7,7 @@ class Sample(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='samples')
     timestamp = models.DateTimeField(default=timezone.now)
     variables = models.ManyToManyField('Variable', through='SampleVariable', related_name='samples')
+    audio_file = models.ForeignKey('AudioFile', on_delete=models.CASCADE, related_name='samples')
 
     def __str__(self):
         return f"{self.location.name} - {self.timestamp}"
@@ -30,7 +31,6 @@ class SampleVariable(models.Model):
 
     
 class AudioFile(models.Model):
-    sample = models.ForeignKey(Sample, on_delete=models.CASCADE, related_name='audio_files')
     file_type = models.CharField(max_length=255)
     scrubbed = models.BooleanField(default=False)
     file_path = models.CharField(max_length=1024)
