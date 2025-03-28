@@ -9,3 +9,4 @@ WORKDIR /workspace/frontend
 RUN npm install
 
 CMD ["tail", "-f", "/dev/null"]
+

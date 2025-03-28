@@ -16,4 +16,4 @@ WORKDIR /workspace/backend
 
 RUN pip install -r requirements.txt
 
-CMD ["tail", "-f", "/dev/null"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
