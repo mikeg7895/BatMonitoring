@@ -40,7 +40,7 @@ class SampleVariable(models.Model):
 class AudioFile(models.Model):
     file_type = models.CharField(max_length=255)
     scrubbed = models.BooleanField(default=False)
-    file_path = models.CharField(max_length=1024)
+    file_path = models.FileField(upload_to='audio_files/')
     sample = models.ForeignKey(Sample, on_delete=models.CASCADE, related_name='audio_files')
 
     def __str__(self):
