@@ -52,12 +52,10 @@ export default function LoginPage() {
 
     try {
       // Cambiamos 0.0.0.0 por localhost o la dirección IP correcta
-      const response = await fetch("http://localhost:8000/api/auth/token/", {
+      const response = await fetch("http://0.0.0.0:8000/api/auth/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Añadimos este header para permitir credenciales en solicitudes cross-origin
-          "Access-Control-Allow-Credentials": "true",
         },
         // Añadimos esta opción para enviar cookies si es necesario
         credentials: "include",
@@ -66,7 +64,6 @@ export default function LoginPage() {
           password: formData.password,
         }),
       })
-
       if (response.ok) {
         const data = await response.json()
         localStorage.setItem("accessToken", data.access)
