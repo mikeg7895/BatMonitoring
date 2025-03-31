@@ -13,7 +13,14 @@ class Sample(models.Model):
 
 
 class Variable(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+    
+class UnitMeasure(models.Model):
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
 
     def __str__(self):
@@ -23,6 +30,7 @@ class Variable(models.Model):
 class SampleVariable(models.Model):
     sample = models.ForeignKey(Sample, on_delete=models.CASCADE, related_name='sample_variables')
     variable = models.ForeignKey(Variable, on_delete=models.CASCADE, related_name='sample_variables')
+    unit_measure = models.ForeignKey(UnitMeasure, on_delete=models.CASCADE, related_name='sample_variables')
     variable_value = models.CharField(max_length=255)
 
     def __str__(self):
@@ -33,22 +41,14 @@ class AudioFile(models.Model):
     sample = models.ForeignKey(Sample, on_delete=models.CASCADE, related_name='audio_files')
     file_type = models.CharField(max_length=255)
     scrubbed = models.BooleanField(default=False)
-    file_path = models.CharField(max_length=1024)
+    file_path = models.FileField(upload_to='audio_files/')
+    sample = models.ForeignKey(Sample, on_delete=models.CASCADE, related_name='audio_files')
 
     def __str__(self):
         return f"{self.sample.location.name} - {self.audio_file.name}"
+    
 
-
-class Specie(models.Model):
-    scientific_name = models.CharField(max_length=255)
-    common_name = models.CharField(max_length=255)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.common_name
-
-
-class Pulse(models.Model):
+class Parameter(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
@@ -56,12 +56,21 @@ class Pulse(models.Model):
         return self.name
 
 
+class Characteristic(models.Model):
+    label = models.CharField(max_length=255)
+    description = models.TextField()
+    parameter = models.ForeignKey(Parameter, on_delete=models.CASCADE, related_name='characteristics')
+
+    def __str__(self):
+        return self.label
+    
+
 class Detection(models.Model):
     audio_file = models.ForeignKey(AudioFile, on_delete=models.CASCADE, related_name='detections')
-    specie = models.ForeignKey(Specie, on_delete=models.CASCADE, related_name='detections')
-    pulse = models.ForeignKey(Pulse, on_delete=models.CASCADE, related_name='detections')
-    start_time = models.DurationField()
-    end_time = models.DurationField()
+    second_start = models.DurationField(null=True, blank=True)
+    second_end = models.DurationField(null=True, blank=True)
+
+    parameters = models.ManyToManyField(Parameter, related_name='detections')
 
     def __str__(self):
         return f"{self.specie.common_name} - {self.start_time}"
