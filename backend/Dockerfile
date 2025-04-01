@@ -1,8 +1,8 @@
 FROM python:3.12-slim
 
-WORKDIR /workspace
+WORKDIR /app-backend
 
-COPY ../.. .
+COPY . .
 
 RUN apt-get update && apt-get install -y \
     binutils \
@@ -12,8 +12,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --upgrade pip
 
-WORKDIR /workspace/backend
+RUN pip install -r requirements.txt 
 
-RUN pip install -r requirements.txt
-
-CMD ["tail", "-f", "/dev/null"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

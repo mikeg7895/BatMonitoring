@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgis/postgis:latest
+    image: postgis/postgis:17-master
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
