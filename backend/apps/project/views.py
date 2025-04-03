@@ -26,7 +26,7 @@ class LocationViewSet(viewsets.ModelViewSet):
             {"detail": "This method is not allowed."},
             status=status.HTTP_405_METHOD_NOT_ALLOWED,
         )
-    
+
     @action(detail=False, methods=['get'], url_path="groups/(?P<project_id>[^/.]+)")
     def groups(self, request, project_id=None):
         qs = self.get_queryset().filter(project_id=project_id)

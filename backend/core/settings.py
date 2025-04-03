@@ -214,3 +214,5 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+NAS_BASE_PATH = BASE_DIR / "nas" # CHANGE IN PRODUCTION
