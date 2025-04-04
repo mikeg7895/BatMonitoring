@@ -14,4 +14,4 @@ class LocationSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Location
         geo_field = 'point'
-        fields = ['id', 'project', 'name', 'folder_name']
+        fields = ['id', 'studio', 'name', 'folder_name']
