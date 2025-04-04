@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Q
 from apps.project.serializers import ProjectSerializer, LocationSerializer
-from apps.project.models import Project, Location
+from apps.project.models import Studio, Location
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -11,7 +11,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         user = self.request.user
-        return Project.objects.filter(Q(created_by=user) | Q(guests=user)).distinct()
+        return Studio.objects.filter(Q(created_by=user) | Q(guests=user)).distinct()
     
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)

@@ -48,7 +48,7 @@ class AudioFile(models.Model):
         return f"{self.sample.location.name} - {self.audio_file.name}"
     
 
-class Parameter(models.Model):
+class Annotation(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
@@ -56,10 +56,10 @@ class Parameter(models.Model):
         return self.name
 
 
-class Characteristic(models.Model):
+class TypeAnnotation(models.Model):
     label = models.CharField(max_length=255)
     description = models.TextField()
-    parameter = models.ForeignKey(Parameter, on_delete=models.CASCADE, related_name='characteristics')
+    parameter = models.ForeignKey(Annotation, on_delete=models.CASCADE, related_name='type_annotations')
 
     def __str__(self):
         return self.label
@@ -70,7 +70,7 @@ class Detection(models.Model):
     second_start = models.DurationField(null=True, blank=True)
     second_end = models.DurationField(null=True, blank=True)
 
-    parameters = models.ManyToManyField(Parameter, related_name='detections')
+    type_annotations = models.ManyToManyField(TypeAnnotation, related_name='detections')
 
     def __str__(self):
         return f"{self.specie.common_name} - {self.start_time}"

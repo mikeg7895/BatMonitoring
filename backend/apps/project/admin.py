@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
-from apps.project.models import Location, Project
+from apps.project.models import Location, Studio
 
 
 admin.site.register(Location, admin.GISModelAdmin)
-admin.site.register(Project)
+admin.site.register(Studio)

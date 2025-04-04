@@ -4,12 +4,12 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 
-class Project(models.Model):
-    name = models.CharField(max_length=255)
+class Studio(models.Model):
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     parent_url = models.CharField(max_length=255, unique=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
-    guests = models.ManyToManyField(User, related_name='guest_projects', blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studios')
+    guests = models.ManyToManyField(User, related_name='guest_studios', blank=True)
 
     def __str__(self):
         return self.name
@@ -19,7 +19,7 @@ class Project(models.Model):
         folder_path = os.path.join(nas_path, self.parent_url)
 
         if self.pk:
-            old_project = Project.objects.get(pk=self.pk)
+            old_project = Studio.objects.get(pk=self.pk)
             old_folder = os.path.join(nas_path, old_project.parent_url)
 
             if old_project.parent_url != self.parent_url:
@@ -34,24 +34,24 @@ class Project(models.Model):
 
 
 class Location(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='locations')
+    studio = models.ForeignKey(Studio, on_delete=models.CASCADE, related_name='locations',)
     name = models.CharField(max_length=255)
     folder_name = models.CharField(max_length=255)
     point = models.PointField()
 
     class Meta:
-        unique_together = ('project', 'folder_name')
+        unique_together = ('studio', 'folder_name')
 
     def __str__(self):
         return self.name
     
     def save(self, *args, **kwargs):
         nas_path = settings.NAS_BASE_PATH
-        folder_path = os.path.join(nas_path, self.project.parent_url, self.folder_name)
+        folder_path = os.path.join(nas_path, self.studio.parent_url, self.folder_name)
 
         if self.pk:
             old_location = Location.objects.get(pk=self.pk)
-            old_folder = os.path.join(nas_path, self.project.parent_url, old_location.folder_name)
+            old_folder = os.path.join(nas_path, self.studio.parent_url, old_location.folder_name)
 
             if old_location.folder_name != self.folder_name:
                 if os.path.exists(old_folder):
