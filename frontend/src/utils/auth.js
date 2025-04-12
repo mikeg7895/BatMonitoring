@@ -10,7 +10,6 @@ export const refreshAccessToken = async () => {
     const response = await fetch("http://localhost:8000/api/auth/token/refresh/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", // Añadimos esta línea
       body: JSON.stringify({ refresh: refreshToken }),
     })
 

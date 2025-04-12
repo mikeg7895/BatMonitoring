@@ -51,19 +51,15 @@ export default function LoginPage() {
     setLoginError("")
 
     try {
-      // Cambiamos 0.0.0.0 por localhost o la dirección IP correcta
-      const response = await fetch("http://0.0.0.0:8000/api/auth/token/", {
+      const response = await fetch("http://localhost:8000/api/auth/token/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // Añadimos esta opción para enviar cookies si es necesario
-        credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username: formData.username,
           password: formData.password,
         }),
       })
+
       if (response.ok) {
         const data = await response.json()
         localStorage.setItem("accessToken", data.access)
@@ -74,11 +70,8 @@ export default function LoginPage() {
         setLoginError(errorData.detail || "Usuario o contraseña incorrectos. Por favor, inténtalo de nuevo.")
       }
     } catch (error) {
+      setLoginError("Error de conexión. Por favor, inténtalo más tarde.")
       console.error("Error de inicio de sesión:", error)
-      setLoginError(
-        "No se pudo conectar con el servidor. Verifica tu conexión a internet o que el servidor esté en funcionamiento.",
-      )
-      setIsLoading(false)
     } finally {
       setIsLoading(false)
     }
