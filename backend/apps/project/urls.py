@@ -1,9 +1,9 @@
 from django.urls import path, include
 from rest_framework import routers
-from apps.project.views import ProjectViewSet, LocationViewSet
+from apps.project.views import StudioViewSet, LocationViewSet
 
 router = routers.DefaultRouter()
-router.register(r'projects', ProjectViewSet, basename="projects")
+router.register(r'studios', StudioViewSet, basename="studios")
 router.register(r'locations', LocationViewSet, basename="locations")
 
 urlpatterns = [

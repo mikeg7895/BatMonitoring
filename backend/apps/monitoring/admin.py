@@ -1,12 +1,8 @@
 from django.contrib import admin
-from apps.monitoring.models import AudioFile, Detection,  Sample, SampleVariable, Variable, UnitMeasure, Annotation, TypeAnnotation
+from apps.monitoring.models import Sampling, SamplingVariable, Variable, UnitMeasure
 
 
-admin.site.register(AudioFile)
-admin.site.register(Detection)
-admin.site.register(Sample)
-admin.site.register(SampleVariable)
+admin.site.register(Sampling)
+admin.site.register(SamplingVariable)
 admin.site.register(Variable)
-admin.site.register(Annotation)
-admin.site.register(TypeAnnotation)
 admin.site.register(UnitMeasure)
