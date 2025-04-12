@@ -43,10 +43,20 @@ services:
       - ../..:/workspace:cached
     networks:
       - batmonitoring
+    
+  broker:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - batmonitoring
   
-
 volumes:
   db-data:
+  rabbitmq-data:
 
 networks:
   batmonitoring:

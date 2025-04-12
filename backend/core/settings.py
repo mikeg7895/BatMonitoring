@@ -34,6 +34,7 @@ MY_APPS = [
     "apps.user",
     "apps.monitoring",
     "apps.project",
+    "apps.detection",
 ]
 
 DJANGO_APPS = [
@@ -52,6 +53,8 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
+    'django_celery_results',
+    'celery_progress',
 ]
 
 INSTALLED_APPS =  DJANGO_APPS + MY_APPS + THIRD_PARTY_APPS
@@ -217,7 +220,9 @@ SWAGGER_SETTINGS = {
 
 NAS_BASE_PATH = BASE_DIR / "nas" # CHANGE IN PRODUCTION
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'amqp://guest:guest@broker:5672//'
+
+CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_ACCEPT_CONTENT = ['json']
 
